@@ -82,7 +82,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    @include('includes.Navbar')
+    @include('includes.navbar')
 
     <main class="flex-grow-1">
         <div class="container mt-4 mb-5">
@@ -90,7 +90,7 @@
         </div>
     </main>
 
-    @include('includes.Footer')
+    @include('includes.footer')
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

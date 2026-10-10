@@ -1,4 +1,4 @@
-@extends('layouts.App')
+@extends('layouts.app')
 
 @section('content')
 
@@ -10,7 +10,7 @@
     <hr>
 </div>
 
-@include('includes.Carousel')
+@include('includes.carousel')
 
 <div class="row text-center mt-4">
     <div class="col-md-4 mb-4">

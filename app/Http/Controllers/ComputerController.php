@@ -7,12 +7,11 @@ use Illuminate\Http\Request;
 
 class ComputerController extends Controller
 {
-    //
-     // Método privado para manejar llamadas HTTP repetitivas
+    // Método privado para manejar llamadas HTTP repetitivas
     private function fetchDataFromApi($url)
     {
-        $response = Http::get($url);
-        return $response->json();
+        $response = Http::acceptJson()->get($url);
+        return $response->json() ?? [];
     }
 
     public function index()
@@ -32,12 +31,23 @@ class ComputerController extends Controller
 
         return view('computer.show', compact('computer'));
     }
-        public function create()
+
+    public function create()
     {
         $url = env('URL_SERVER_API');
+
         $environments = $this->fetchDataFromApi($url . '/environments');
 
         return view('computer.create', compact('environments'));
+    }
+
+    public function store(Request $request)
+    {
+        $url = env('URL_SERVER_API');
+
+        Http::acceptJson()->post($url . '/computers', $request->all());
+
+        return redirect()->route('computer.index');
     }
 
     public function edit($id)
@@ -48,15 +58,6 @@ class ComputerController extends Controller
         $environments = $this->fetchDataFromApi($url . '/environments');
 
         return view('computer.edit', compact('computer', 'environments'));
-    }
-
-    public function store(Request $request)
-    {
-        $url = env('URL_SERVER_API');
-
-        Http::acceptJson()->post($url . '/computers', $request->all());
-
-        return redirect()->route('computer.index');
     }
 
     public function update(Request $request, $id)
@@ -71,7 +72,8 @@ class ComputerController extends Controller
     public function destroy($id)
     {
         $url = env('URL_SERVER_API');
-        Http::delete($url . '/computers/' . $id);
+
+        Http::acceptJson()->delete($url . '/computers/' . $id);
 
         return redirect()->route('computer.index');
     }

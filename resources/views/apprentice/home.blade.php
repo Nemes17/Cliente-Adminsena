@@ -1,4 +1,4 @@
-@extends('layouts.App')
+@extends('layouts.app')
 
 @section('content')
 
@@ -13,7 +13,7 @@
     <hr>
 </div>
 
-@include('includes.Carousel')
+@include('includes.carousel')
 
 @if(!$apprentice)
     <div class="alert alert-warning text-center">

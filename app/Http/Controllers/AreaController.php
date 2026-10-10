@@ -7,12 +7,11 @@ use Illuminate\Http\Request;
 
 class AreaController extends Controller
 {
-    //
     // Método privado para manejar llamadas HTTP repetitivas
     private function fetchDataFromApi($url)
     {
-        $response = Http::get($url);
-        return $response->json();
+        $response = Http::acceptJson()->get($url);
+        return $response->json() ?? [];
     }
 
     public function index()
@@ -33,7 +32,7 @@ class AreaController extends Controller
         return view('area.show', compact('area'));
     }
 
-     public function create()
+    public function create()
     {
         return view('area.create');
     }
@@ -42,33 +41,35 @@ class AreaController extends Controller
     {
         $url = env('URL_SERVER_API');
 
-        Http::post($url . '/areas', $request->all());
+        Http::acceptJson()->post($url . '/areas', $request->all());
 
         return redirect()->route('area.index');
     }
 
-     public function edit($id)
+    public function edit($id)
     {
         $url = env('URL_SERVER_API');
+
         $area = $this->fetchDataFromApi($url . '/areas/' . $id);
+
         return view('area.edit', compact('area'));
     }
-
 
     public function update(Request $request, $id)
     {
         $url = env('URL_SERVER_API');
 
-        Http::put($url . '/areas/' . $id, $request->all());
+        Http::acceptJson()->put($url . '/areas/' . $id, $request->all());
 
         return redirect()->route('area.index');
     }
 
-
-      public function destroy($id)
+    public function destroy($id)
     {
         $url = env('URL_SERVER_API');
-        Http::delete($url . '/areas/' . $id);
+
+        Http::acceptJson()->delete($url . '/areas/' . $id);
+
         return redirect()->route('area.index');
     }
 }
