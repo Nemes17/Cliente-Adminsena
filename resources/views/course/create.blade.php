@@ -2,69 +2,77 @@
 
 @section('content')
 
-<h2>Formulario Curso</h2>
-<div class="card shadow p-4">
-    @if(session('success'))
-        <p style="color:green">{{ session('success') }}</p>
-    @endif
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header text-white" style="background-color: #3DAE2B;">
+                <h4 class="mb-0">Registrar Curso</h4>
+            </div>
+            <div class="card-body">
+                @if(session('success'))
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
 
-    <form action="{{ route('course.store') }}" method="POST">
-        @csrf
-        <label>Course Number:</label>
-        <input type="number" name="course_number">
-        <br><br>
+                <form action="{{ route('course.store') }}" method="POST">
+                    @csrf
 
-        <label>Day:</label>
-        <input type="date" name="day">
-        <br><br>
+                    <div class="mb-3">
+                        <label class="form-label">Número de Ficha</label>
+                        <input type="number" name="course_number" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" name="day" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Área</label>
+                        <select name="area_id" class="form-select">
+                            <option value="">-- Seleccionar --</option>
+                            @foreach($areas as $area)
+                                <option value="{{ $area['id'] }}">{{ $area['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Centro de Formación</label>
+                        <select name="training_center_id" class="form-select">
+                            <option value="">-- Seleccionar --</option>
+                            @foreach($trainingCenters as $center)
+                                <option value="{{ $center['id'] }}">{{ $center['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ambiente</label>
+                        <select name="environment_id" class="form-select">
+                            <option value="">-- Seleccionar --</option>
+                            @foreach($environments as $environment)
+                                <option value="{{ $environment['id'] }}">{{ $environment['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Oferta (Programa)</label>
+                        <select name="offer_id" class="form-select">
+                            <option value="">-- Seleccionar --</option>
+                            @foreach($offers as $offer)
+                                <option value="{{ $offer['id'] }}">{{ $offer['name'] }} ({{ $offer['level'] == 'tecnologo' ? 'Tecnólogo' : 'Técnico' }})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Cupo máximo de aprendices</label>
+                        <input type="number" name="quota" class="form-control" min="0">
+                    </div>
 
-        <label>Area:</label>
-        <select name="area_id">
-            <option value="">-- Seleccionar --</option>
-            @foreach($areas as $area)
-                <option value="{{ $area->id }}">{{ $area->name }}</option>
-            @endforeach
-        </select>
-        <br><br>
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ route('course.index') }}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-success" onclick="this.disabled=true; this.form.submit();">Guardar Curso</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <label>Training Center:</label>
-        <select name="training_center_id">
-            <option value="">-- Seleccionar --</option>
-            @foreach($trainingCenters as $center)
-                <option value="{{ $center->id }}">{{ $center->name }}</option>
-            @endforeach
-        </select>
-        <br><br>
-        
-
-        <label>Ambiente:</label>
-        <select name="environment_id">
-            <option value="">-- Seleccionar --</option>
-            @foreach($environments as $environment)
-                <option value="{{ $environment->id }}">{{ $environment->name }}</option>
-            @endforeach
-        </select>
-        <br><br>
-
-        <label>Oferta (Programa):</label>
-        <select name="offer_id">
-            <option value="">-- Seleccionar --</option>
-            @foreach($offers as $offer)
-                <option value="{{ $offer->id }}">
-                    {{ $offer->name }} ({{ $offer->level === 'tecnologo' ? 'Tecnólogo' : 'Técnico' }})
-                </option>
-            @endforeach
-        </select>
-        <br><br>
-
-        <label>Cupo máximo de aprendices:</label>
-        <input type="number" min="0" name="quota" placeholder="Ej. 30">
-        <br><br>
-
-        <button type="submit" class="btn btn-success" 
-        onclick="this.disabled=true; this.form.submit();">
-        Guardar Curso
-        </button>
-    </form>
- </div>
 @endsection

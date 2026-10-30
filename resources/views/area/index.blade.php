@@ -9,6 +9,7 @@
     <thead class="table-dark">
         <tr>
             <th>ID</th>
+            <th>Imagen</th>
             <th>Name</th>
             <th>Acciones</th>
             
@@ -18,6 +19,13 @@
        @foreach($areas as $area)
 <tr>
     <td>{{ $area['id'] }}</td>
+<td>
+        @if(!empty($area['imagen_url']))
+            <img src="{{ $area['imagen_url'] }}" alt="{{ $area['name'] }}" style="width: 70px; height: 70px; object-fit: cover;" class="rounded">
+        @else
+            <span class="text-muted">Sin imagen</span>
+        @endif
+    </td>
     <td>{{ $area['name'] }}</td>
     <td>
         <a href="{{ route('area.show', $area['id']) }}" class="btn btn-info btn-sm">Ver</a>

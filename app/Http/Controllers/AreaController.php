@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class AreaController extends Controller
 {
-    // Método privado para manejar llamadas HTTP repetitivas
+    
     private function fetchDataFromApi($url)
     {
         $response = Http::acceptJson()->get($url);
@@ -39,9 +39,17 @@ class AreaController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'imagen' => 'required|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
+
         $url = env('URL_SERVER_API');
 
-        Http::acceptJson()->post($url . '/areas', $request->all());
+        $file = $request->file('imagen');
+
+        $response = Http::attach('imagen', file_get_contents($file->getRealPath()), $file->getClientOriginalName())
+        ->post($url . '/areas', ['name' => $request->name,]);
 
         return redirect()->route('area.index');
     }

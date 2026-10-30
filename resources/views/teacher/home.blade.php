@@ -6,7 +6,7 @@
     <img src="{{asset("logo-sena.png")}}"
          alt="SENA" height="120" class="mb-4">
     <h1 class="fw-bold" style="color: #3DAE2B;">
-        Bienvenido{{ $teacher ? ', '.$teacher->name : '' }}
+        Bienvenido{{ $teacher ? ', '.$teacher['name'] : '' }}
     </h1>
     <p class="lead text-muted">Panel del Instructor</p>
     <hr>
@@ -25,7 +25,7 @@
             <div class="card-body">
                 <i class="fas fa-map-marker-alt fa-3x mb-3" style="color: #3DAE2B;"></i>
                 <h5 class="card-title">Área</h5>
-                <p class="card-text">{{ $teacher->area->name ?? 'Sin asignar' }}</p>
+                <p class="card-text">{{ $teacher['area']['name'] ?? 'Sin asignar' }}</p>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
             <div class="card-body">
                 <i class="fas fa-building fa-3x mb-3" style="color: #3DAE2B;"></i>
                 <h5 class="card-title">Centro de Formación</h5>
-                <p class="card-text">{{ $teacher->training_center->name ?? 'Sin asignar' }}</p>
+                <p class="card-text">{{ $teacher['training_center']['name'] ?? 'Sin asignar' }}</p>
             </div>
         </div>
     </div>
@@ -43,7 +43,7 @@
             <div class="card-body">
                 <i class="fas fa-book fa-3x mb-3" style="color: #3DAE2B;"></i>
                 <h5 class="card-title">Cursos a cargo</h5>
-                <p class="card-text">{{ $courses->count() }}</p>
+                <p class="card-text">{{ count($courses) }}</p>
             </div>
         </div>
     </div>
@@ -57,18 +57,22 @@
             <th>Fecha</th>
             <th>Área</th>
             <th>Centro de Formación</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @forelse($courses as $course)
         <tr>
-            <td>{{ $course->course_number }}</td>
-            <td>{{ $course->day }}</td>
-            <td>{{ $course->area->name ?? '-' }}</td>
-            <td>{{ $course->training_center->name ?? '-' }}</td>
+            <td>{{ $course['course_number'] }}</td>
+            <td>{{ $course['day'] }}</td>
+            <td>{{ $course['area']['name'] ?? '-' }}</td>
+            <td>{{ $course['training_center']['name'] ?? '-' }}</td>
+            <td>
+                <a href="{{ route('teacher.apprentices', $course['id']) }}" class="btn btn-outline-success btn-sm">Ver Aprendices</a>
+            </td>
         </tr>
         @empty
-        <tr><td colspan="4" class="text-center text-muted">No tienes cursos asignados aún.</td></tr>
+        <tr><td colspan="5" class="text-center text-muted">No tienes cursos asignados aún.</td></tr>
         @endforelse
     </tbody>
 </table>

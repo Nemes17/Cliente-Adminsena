@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    // Método privado para manejar llamadas HTTP repetitivas
+    
     private function fetchDataFromApi($url)
     {
         $response = Http::acceptJson()->get($url);

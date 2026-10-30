@@ -9,6 +9,7 @@
     <thead class="table-dark">
         <tr>
             <th>ID</th>
+            <th>Imagen</th>
             <th>Name</th>
             <th>Location</th>
             <th>Acciones</th>
@@ -18,6 +19,13 @@
         @foreach($trainingCenters as $center)
         <tr>
             <td>{{ $center['id'] }}</td>
+            <td>
+                @if(!empty($center['imagen_url']))
+                    <img src="{{ $center['imagen_url'] }}" alt="{{ $center['name'] }}" style="width: 70px; height: 70px; object-fit: cover;" class="rounded">
+                @else
+                    <span class="text-muted">Sin imagen</span>
+                @endif
+            </td>
             <td>{{ $center['name'] }}</td>
             <td>{{ $center['location'] }}</td>
             <td>

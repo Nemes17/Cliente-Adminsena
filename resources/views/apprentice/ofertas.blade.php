@@ -11,9 +11,9 @@
     <div class="alert alert-danger">{{ session('error') }}</div>
 @endif
 
-@if($apprentice && $apprentice->course_id)
+@if($apprentice && $apprentice['course_id'])
     <div class="alert alert-info">
-        Ya estás inscrito en la ficha <strong>{{ $apprentice->course->course_number ?? '' }}</strong>.
+        Ya estás inscrito en la ficha <strong>{{ $apprentice['course']['course_number'] ?? '' }}</strong>.
         Si quieres cambiarte de programa, primero debes retirarte.
         <form action="{{ route('apprentice.retirarme') }}" method="POST" class="d-inline">
             @csrf
@@ -30,19 +30,19 @@
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-start">
             <div>
-                <h4 class="card-title mb-1">{{ $offer->name }}</h4>
-                <span class="badge {{ $offer->level === 'tecnologo' ? 'bg-primary' : 'bg-info' }}">
-                    {{ $offer->level === 'tecnologo' ? 'Tecnólogo' : 'Técnico' }}
+                <h4 class="card-title mb-1">{{ $offer['name'] }}</h4>
+                <span class="badge {{ $offer['level'] === 'tecnologo' ? 'bg-primary' : 'bg-info' }}">
+                    {{ $offer['level'] === 'tecnologo' ? 'Tecnólogo' : 'Técnico' }}
                 </span>
-                <span class="text-muted ms-2">{{ $offer->area->name ?? '' }}</span>
+                <span class="text-muted ms-2">{{ $offer['area']['name'] ?? '' }}</span>
             </div>
-            @if($offer->duration_months)
-                <span class="text-muted">{{ $offer->duration_months }} meses</span>
+            @if($offer['duration_months'])
+                <span class="text-muted">{{ $offer['duration_months'] }} meses</span>
             @endif
         </div>
 
-        @if($offer->description)
-            <p class="mt-2">{{ $offer->description }}</p>
+        @if($offer['description'])
+            <p class="mt-2">{{ $offer['description'] }}</p>
         @endif
 
         <h6 class="mt-3">Fichas disponibles:</h6>
@@ -57,18 +57,18 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($offer->courses as $course)
-                    @php $cupos = $course->cuposDisponibles(); @endphp
+                @forelse($offer['courses'] as $course)
+                    @php $cupos = is_null($course['quota']) ? null : max(0, $course['quota'] - count($course['apprentices'])); @endphp
                     <tr>
-                        <td>{{ $course->course_number }}</td>
-                        <td>{{ $course->training_center->name ?? '-' }}</td>
-                        <td>{{ $course->environment->name ?? '-' }}</td>
+                        <td>{{ $course['course_number'] }}</td>
+                        <td>{{ $course['training_center']['name'] ?? '-' }}</td>
+                        <td>{{ $course['environment']['name'] ?? '-' }}</td>
                         <td>{{ is_null($cupos) ? 'Sin límite' : $cupos }}</td>
                         <td>
-                            <form action="{{ route('apprentice.inscribirse', $course->id) }}" method="POST">
+                            <form action="{{ route('apprentice.inscribirse', $course['id']) }}" method="POST">
                                 @csrf
                                 <button type="submit" class="btn btn-success btn-sm"
-                                    {{ ($apprentice && $apprentice->course_id) || (!is_null($cupos) && $cupos <= 0) ? 'disabled' : '' }}>
+                                    {{ ($apprentice && $apprentice['course_id']) || (!is_null($cupos) && $cupos <= 0) ? 'disabled' : '' }}>
                                     Inscribirme
                                 </button>
                             </form>

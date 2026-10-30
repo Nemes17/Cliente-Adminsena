@@ -3,7 +3,7 @@
 @section('content')
 
 <h1>Lista de Instructores</h1>
-<a href="{{ url('/teacher/create') }}" class="btn btn-primary mb-3">+ Agregar Instructor</a>
+<a href="{{ route('teacher.create') }}" class="btn btn-primary mb-3">+ Agregar Instructor</a>
 
 <table class="table table-bordered table-striped">
     <thead class="table-dark">
@@ -19,20 +19,22 @@
     <tbody>
         @foreach($teachers as $teacher)
         <tr>
-            <td>{{ $teacher->id }}</td>
-            <td>{{ $teacher->name }}</td>
-            <td>{{ $teacher->email }}</td>
-            <td>{{ $teacher->area->name ?? 'Sin área' }}</td>
-            <td>{{ $teacher->training_center->name ?? 'Sin centro' }}</td>
-            <td><a href="{{ url('/teacher/'.$teacher->id) }}" class="btn btn-info btn-sm">Ver</a>
-            <a href="{{ url('/teacher/'.$teacher->id.'/edit') }}" class="btn btn-warning btn-sm">Editar</a>
-            <form action="{{ url('/teacher/'.$teacher->id) }}" method="POST" style="display:inline">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-sm"onclick="return confirm('¿Eliminar este registro?')">
-            Eliminar
-            </button>
-            </form>
+            <td>{{ $teacher['id'] }}</td>
+            <td>{{ $teacher['name'] }}</td>
+            <td>{{ $teacher['email'] }}</td>
+            <td>{{ $teacher['area']['name'] ?? 'Sin área' }}</td>
+            <td>{{ $teacher['training_center']['name'] ?? 'Sin centro' }}</td>
+            <td>
+                <a href="{{ route('teacher.show', $teacher['id']) }}" class="btn btn-info btn-sm">Ver</a>
+                <a href="{{ route('teacher.edit', $teacher['id']) }}" class="btn btn-warning btn-sm">Editar</a>
+                <form action="{{ route('teacher.destroy', $teacher['id']) }}" method="POST" style="display:inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirm('¿Eliminar este registro?')">
+                        Eliminar
+                    </button>
+                </form>
             </td>
         </tr>
         @endforeach

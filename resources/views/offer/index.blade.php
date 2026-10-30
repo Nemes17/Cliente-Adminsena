@@ -3,7 +3,7 @@
 @section('content')
 
 <h1>Lista de Ofertas</h1>
-<a href="{{ url('/offer/create') }}" class="btn btn-primary mb-3">+ Agregar Oferta</a>
+<a href="{{ route('offer.create') }}" class="btn btn-primary mb-3">+ Agregar Oferta</a>
 
 @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
@@ -24,27 +24,27 @@
     <tbody>
         @foreach($offers as $offer)
         <tr>
-            <td>{{ $offer->id }}</td>
-            <td>{{ $offer->name }}</td>
-            <td>{{ $offer->level === 'tecnologo' ? 'Tecnólogo' : 'Técnico' }}</td>
-            <td>{{ $offer->area->name ?? 'Sin asignar' }}</td>
-            <td>{{ $offer->courses_count }}</td>
+            <td>{{ $offer['id'] }}</td>
+            <td>{{ $offer['name'] }}</td>
+            <td>{{ $offer['level'] === 'tecnologo' ? 'Tecnólogo' : 'Técnico' }}</td>
+            <td>{{ $offer['area']['name'] ?? 'Sin asignar' }}</td>
+            <td>{{ $offer['courses_count'] ?? '-' }}</td>
             <td>
-                <span class="badge {{ $offer->status === 'abierta' ? 'bg-success' : 'bg-secondary' }}">
-                    {{ ucfirst($offer->status) }}
+                <span class="badge {{ ($offer['status'] ?? '') === 'abierta' ? 'bg-success' : 'bg-secondary' }}">
+                    {{ ucfirst($offer['status'] ?? '') }}
                 </span>
             </td>
             <td>
-            <a href="{{ url('/offer/'.$offer->id) }}" class="btn btn-info btn-sm">Ver</a>
-            <a href="{{ url('/offer/'.$offer->id.'/edit') }}" class="btn btn-warning btn-sm">Editar</a>
-            <form action="{{ url('/offer/'.$offer->id) }}" method="POST" style="display:inline">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger btn-sm"
-            onclick="return confirm('¿Eliminar este registro?')">
-            Eliminar
-            </button>
-            </form>
+                <a href="{{ route('offer.show', $offer['id']) }}" class="btn btn-info btn-sm">Ver</a>
+                <a href="{{ route('offer.edit', $offer['id']) }}" class="btn btn-warning btn-sm">Editar</a>
+                <form action="{{ route('offer.destroy', $offer['id']) }}" method="POST" style="display:inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirm('¿Eliminar este registro?')">
+                        Eliminar
+                    </button>
+                </form>
             </td>
         </tr>
         @endforeach
@@ -52,4 +52,3 @@
 </table>
 
 @endsection
-

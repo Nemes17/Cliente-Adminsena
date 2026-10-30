@@ -6,7 +6,7 @@
     <img src="{{asset("logo-sena.png")}}"
          alt="SENA" height="120" class="mb-4">
     <h1 class="fw-bold" style="color: #3DAE2B;">
-        Bienvenido{{ $apprentice ? ', '.$apprentice->name : '' }}
+        Bienvenido{{ $apprentice ? ', '.$apprentice['name'] : '' }}
     </h1>
     <p class="lead text-muted">Panel del Aprendiz</p>
     <a href="{{ route('apprentice.ofertas') }}" class="btn btn-success mt-2">Ver Ofertas Disponibles</a>
@@ -27,7 +27,7 @@
                 <i class="fas fa-book fa-3x mb-3" style="color: #3DAE2B;"></i>
                 <h5 class="card-title">Mi Curso</h5>
                 <p class="card-text">
-                    Ficha {{ $apprentice->course->course_number ?? 'Sin asignar' }}
+                    Ficha {{ $apprentice['course']['course_number'] ?? 'Sin asignar' }}
                 </p>
             </div>
         </div>
@@ -37,7 +37,7 @@
             <div class="card-body">
                 <i class="fas fa-building fa-3x mb-3" style="color: #3DAE2B;"></i>
                 <h5 class="card-title">Centro de Formación</h5>
-                <p class="card-text">{{ $apprentice->course->training_center->name ?? 'Sin asignar' }}</p>
+                <p class="card-text">{{ $apprentice['course']['training_center']['name'] ?? 'Sin asignar' }}</p>
             </div>
         </div>
     </div>
@@ -47,8 +47,8 @@
                 <i class="fas fa-desktop fa-3x mb-3" style="color: #3DAE2B;"></i>
                 <h5 class="card-title">Mi Computador</h5>
                 <p class="card-text">
-                    @if($apprentice->computer)
-                        {{ $apprentice->computer->brand }} (No. {{ $apprentice->computer->number }})
+                    @if($apprentice['computer'])
+                        {{ $apprentice['computer']['brand'] }} (No. {{ $apprentice['computer']['number'] }})
                     @else
                         Sin asignar
                     @endif
@@ -60,9 +60,9 @@
 
 <div class="card p-4 mt-3">
     <h5>Mis Datos</h5>
-    <p><strong>Correo:</strong> {{ $apprentice->email }}</p>
-    <p><strong>Celular:</strong> {{ $apprentice->cell_number }}</p>
-    <p><strong>Área del curso:</strong> {{ $apprentice->course->area->name ?? '-' }}</p>
+    <p><strong>Correo:</strong> {{ $apprentice['email'] }}</p>
+    <p><strong>Celular:</strong> {{ $apprentice['cell_number'] }}</p>
+    <p><strong>Área del curso:</strong> {{ $apprentice['course']['area']['name'] ?? '-' }}</p>
 </div>
 @endif
 
